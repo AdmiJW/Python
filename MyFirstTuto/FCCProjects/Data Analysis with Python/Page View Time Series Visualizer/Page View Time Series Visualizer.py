@@ -243,6 +243,16 @@ def draw_line_plot():
 draw_line_plot()
 
 
+
+
+
+
+
+
+
+
+
+
 # ![Bar](https://github.com/AdmiJW/Items/blob/master/SeperatingBars/Horizontalbar_purple.png?raw=true)
 # 
 # # 5.0 - Problem #2: Drawing Bar Chart
@@ -259,7 +269,6 @@ draw_line_plot()
 # 
 # No matter what, we have to extract the year and months from the `datetime` object from the index.
 
-# In[17]:
 
 
 def draw_bar_plot():
@@ -332,6 +341,12 @@ def draw_bar_plot_matplotlib():
 
 
 
+
+
+
+
+
+
 # ![Bar](https://github.com/AdmiJW/Items/blob/master/SeperatingBars/Horizontalbar_purple.png?raw=true)
 # 
 # # 6.0 - Problem #3: Drawing Box Plot
@@ -345,7 +360,6 @@ def draw_bar_plot_matplotlib():
 # 
 # Like above bar plot, we have to add 2 columns into the original DataFrame to make it easier to work with. We have to add the month column and year column.
 
-# In[23]:
 
 
 def draw_box_plot():
@@ -375,12 +389,8 @@ def draw_box_plot():
     return fig
 
 
-# In[24]:
-
 
 draw_box_plot()
-
-# In[ ]:
 
 
 
