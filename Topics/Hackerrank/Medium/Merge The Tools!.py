@@ -39,6 +39,7 @@ def merge_the_tools2(string:str, k: int) -> None:
         exists = dict()
         print(''.join( [ exists.setdefault(c, c) for c in string if c not in exists ] ) )
 
+
 if __name__ == '__main__':
     string, k = input(), int( input() )
     merge_the_tools2(string, k)
