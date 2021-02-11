@@ -8,7 +8,7 @@ import re
 # Regex Solution
 def soln1():
     emailRegex = re.compile( "^[a-zA-Z0-9-_]+@[a-zA-Z0-9]+\.[a-zA-Z]{1,3}$")
-    emails = [ input() for i in range( int(input() ) ]
+    emails = [ input() for i in range( int(input() ) ) ]
     print( *sorted( filter( lambda x: re.fullmatch(emailRegex, x) ) ) )
 
 
