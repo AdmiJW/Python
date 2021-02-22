@@ -1,7 +1,6 @@
 
 import re
 
-
 # Breakdown of my regular expression:
 #   ^                           -   Starts with
 #   M{0,3}                      -   Can be 0 to 3 'M's
