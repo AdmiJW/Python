@@ -1,8 +1,8 @@
 import pygame
 
-from Tutorial.Pong.State import STATUS
+from GameDev.Tutorial.Pong.State import STATUS
 
-from Tutorial.Pong.Text.RenderableText import RenderableText
+from GameDev.Tutorial.Pong.Text.RenderableText import RenderableText
 
 
 class Scores(RenderableText):

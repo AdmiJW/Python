@@ -5,19 +5,19 @@ pygame.mixer.pre_init(frequency=22050, size=-16, channels=2, buffer=512)
 pygame.init()
 
 
-from Tutorial.Pong.State import STATE, STATUS
+from GameDev.Tutorial.Pong.State import STATE, STATUS
 
-from Tutorial.Pong.Pads.PlayerPad import PlayerPad
-from Tutorial.Pong.Pads.EnemyPad import EnemyPad
+from GameDev.Tutorial.Pong.Pads.PlayerPad import PlayerPad
+from GameDev.Tutorial.Pong.Pads.EnemyPad import EnemyPad
 
-from Tutorial.Pong.Text.MainMenu import MainMenu
-from Tutorial.Pong.Text.WinningScreen import WinningScreen
-from Tutorial.Pong.Text.Scores import Scores
-from Tutorial.Pong.Text.PromptServe import PromptServe
+from GameDev.Tutorial.Pong.Text.MainMenu import MainMenu
+from GameDev.Tutorial.Pong.Text.WinningScreen import WinningScreen
+from GameDev.Tutorial.Pong.Text.Scores import Scores
+from GameDev.Tutorial.Pong.Text.PromptServe import PromptServe
 
-from Tutorial.Pong.Ball import Ball
+from GameDev.Tutorial.Pong.Ball import Ball
 
-from Tutorial.Pong.Sounds.Sounds import Sounds
+from GameDev.Tutorial.Pong.Sounds.Sounds import Sounds
 
 
 #   STATE ===========================

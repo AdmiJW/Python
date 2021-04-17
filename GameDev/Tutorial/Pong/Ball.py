@@ -1,10 +1,10 @@
 import pygame
 import random
 
-from Tutorial.Pong.Pads.PlayerPad import PlayerPad
-from Tutorial.Pong.Pads.EnemyPad import EnemyPad
+from GameDev.Tutorial.Pong.Pads.PlayerPad import PlayerPad
+from GameDev.Tutorial.Pong.Pads.EnemyPad import EnemyPad
 
-from Tutorial.Pong.Sounds.Sounds import Sounds
+from GameDev.Tutorial.Pong.Sounds.Sounds import Sounds
 
 class Ball(pygame.sprite.Sprite):
     BALL_SIZE = 20

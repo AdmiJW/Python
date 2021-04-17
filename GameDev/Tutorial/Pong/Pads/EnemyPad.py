@@ -1,5 +1,5 @@
 import pygame
-from Tutorial.Pong.Pads.Pad import Pad
+from GameDev.Tutorial.Pong.Pads.Pad import Pad
 
 
 class EnemyPad(Pad):

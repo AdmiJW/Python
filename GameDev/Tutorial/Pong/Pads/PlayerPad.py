@@ -1,5 +1,5 @@
 import pygame
-from Tutorial.Pong.Pads.Pad import Pad
+from GameDev.Tutorial.Pong.Pads.Pad import Pad
 
 class PlayerPad(Pad):
     def __init__(self, state):

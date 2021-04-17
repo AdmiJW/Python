@@ -1,6 +1,6 @@
 import pygame
 
-from Tutorial.Pong.Text.RenderableText import RenderableText
+from GameDev.Tutorial.Pong.Text.RenderableText import RenderableText
 
 
 class PromptServe(RenderableText):
