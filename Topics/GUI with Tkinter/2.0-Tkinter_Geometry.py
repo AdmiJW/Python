@@ -2,6 +2,28 @@
 # http://tcl.tk/man/tcl8.5/TkCmd/contents.htm
 
 
+# Tkinter comes with a collection of widgets. Here goes some of them:
+#       > Button
+#       > Canvas
+#       > Checkbutton
+#       > Entry
+#       > Frame
+#       > Label
+#       > Listbox
+#       > Menubutton
+#       > Menu
+#       > Message
+#       > Radiobutton
+#       > Scale
+#       > Scrollbar
+#       > Text
+#       > Toplevel
+#       > Spinbox
+#       > PanedWindow
+#       > LabelFrame
+#       > tkMessageBox
+
+
 # In tkinter, there are mainly 3 types of geometry, which is essentially specifying which function
 # are used to arrange and position the widgets on display
 # The 3 main ones are:
@@ -50,7 +72,6 @@
 
 import tkinter as tk
 
-
 class MainApplication(tk.Frame):
     # Methods
     def __init__(self, master=None):
@@ -61,7 +82,8 @@ class MainApplication(tk.Frame):
         self.changeState(2)
         self.btnPane = SelectStateButton(self)
         self.btnPane.pack(side=tk.BOTTOM)
-        self.pack(expand=True)
+        self.pack()
+
 
     def changeState(self, state):
         self.stateWindow.destroy() if self.stateWindow is not None else None
@@ -71,7 +93,9 @@ class MainApplication(tk.Frame):
         elif state == 2:
             self.stateWindow = GridWindow(self)
         elif state == 3:
-            self.stateWindow = None
+            self.stateWindow = PlaceWindow(self)
+        elif state == 4:
+            self.stateWindow = ReliefWindow(self)
 
         self.stateWindow.pack()
 
@@ -90,6 +114,7 @@ class SelectStateButton(tk.Frame):
             tk.Button(self, text='pack()', command=lambda: self.master.changeState(1) ),
             tk.Button(self, text='grid()', command=lambda: self.master.changeState(2) ),
             tk.Button(self, text='place()', command=lambda: self.master.changeState(3) ),
+            tk.Button(self, text='Bonus: Relief Styles', command=lambda: self.master.changeState(4) )
         )
 
         for btn in self.btns:
@@ -144,6 +169,44 @@ class GridWindow(tk.Frame):
             b.grid(column=i % 5, row=i // 5, ipadx=self.BTN_PAD, ipady=self.BTN_PAD)
 
 
+
+# place() Demonstration Window
+class PlaceWindow(tk.Frame):
+    def __init__(self, master=None):
+        super().__init__(master)
+        self.master = master
+        self['height'] = 200
+        self['width'] = 200
+        self['bg'] = '#34495e'
+        self['relief'] = tk.GROOVE
+        self['borderwidth'] = 4
+
+        self.text1 = tk.Label(self, text="Henlo", font=("Helvetica", "16", "bold"), fg='#27ae60')
+        self.text2 = tk.Label(self, text="Hooman", font=("Helvetica", "16", "bold"), fg='#2980b9')
+        self.text3 = tk.Label(self, text=":3", font=("Helvetica", "26", "bold"), fg='#f39c12')
+        self.text1.place(x=100)
+        self.text2.place(x=60, y=50)
+        self.text3.place(x=70, y=100)
+
+
+
+# Bonus: Relief styles
+# Relief style are simply simulated 3D border styles on the border
+# of the widget. Note that the border must have non-zero width to see the relief effect
+class ReliefWindow(tk.Frame):
+    def __init__(self, master=None):
+        super().__init__(master)
+        self.master = master
+
+        self.btns = [
+            tk.Button(self, text='FLAT', relief=tk.FLAT, borderwidth=4),
+            tk.Button(self, text='RAISED', relief=tk.RAISED, borderwidth=4),
+            tk.Button(self, text='SUNKEN', relief=tk.SUNKEN, borderwidth=4),
+            tk.Button(self, text='GROOVE', relief=tk.GROOVE, borderwidth=4),
+            tk.Button(self, text='RIDGE', relief=tk.RIDGE, borderwidth=4),
+        ]
+        for btn in self.btns:
+            btn.pack( ipadx=15, ipady=5, pady=5 )
 
 
 
