@@ -2,9 +2,9 @@ import cv2 as cv
 import numpy as np
 
 
-###########################################
-#   SLIDERS WINDOW
-###########################################
+#############################################
+#   SLIDERS WINDOW - Menu for sliders control
+#############################################
 hue = 0
 hueTolerance = 0
 saturationLow = 0
@@ -36,6 +36,7 @@ def detectionAreaOnChange(val):
     global detectionArea
     detectionArea = val
 
+
 cv.namedWindow('My Slider', cv.WINDOW_NORMAL)
 cv.createTrackbar('Hue', 'My Slider', 0, 180, hueOnChange)
 cv.createTrackbar('Hue Tolerance', 'My Slider', 0, 180, hueToleranceOnChange)
@@ -48,7 +49,7 @@ cv.createTrackbar('Detection Area', 'My Slider', 300, 2000, detectionAreaOnChang
 
 
 ###########################################
-#   RED DETECTOR
+#   RED COLOR DETECTOR
 ###########################################
 def redDetection(hsvFrame, frame):
     low = np.array([ 160, 100, 100] )
