@@ -84,9 +84,15 @@ class Singleton {
     String name = "Hi";
 
     // Singleton
-    static Singleton s = new Singleton();
-    
+    static Singleton obj = new Singleton();
 
+    // Make constructor private
+    private Singleton(){}
+
+    // Method to retrieve singleton
+    public static Singleton retrieve() {
+        return obj;
+    }
 }
 ```
 
