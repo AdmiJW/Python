@@ -86,7 +86,7 @@ class BallSmall(Ball):
 
 
 #   Window Initialization ================
-DISPLAY = pygame.display.set_mode( (state['WINDOW_WIDTH'], state['WINDOW_HEIGHT'] ) )
+DISPLAY = pygame.display.set_mode( (state['WINDOW_WIDTH'], state['WINDOW_HEIGHT'] ), pygame.RESIZABLE )
 pygame.display.set_caption("Foot ball")
 
 #   Converts the background image

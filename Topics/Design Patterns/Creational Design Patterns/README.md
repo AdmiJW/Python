@@ -98,3 +98,63 @@ class Singleton {
 
 
 <br><br>
+
+
+---
+## 2.3 - __Builder__ 🏗
+
+---
+
+__Builder__ is a solution to a anti-pattern called *Telescoping constructor*. 
+
+A *Telescoping constructor* is essentially a constructor of a class that is bloated: maybe it has 10 required parameters to initialize all the fields of the object, which is a lot. Maybe you will work around with having separate setters, but still that isn't very elegant.
+
+A __Builder__'s job is to construct the complex object, but hiding away all the pesty details away from the user. Imagine the original object requires 10 parameters to construct, but using builders, you can choose 3 of them to fill only.
+
+The __Builder__ design pattern usually consist of these main components:
+
+|Components|Description|
+|-|-|
+|__Director__| In charge of actually building the object via Builders; The class using the builders |
+|__Abstract Builder__|The base builder class which will be inherited by __Concrete Builders__ (Eg: `PhoneBuilder`)|
+|__Concrete Builders__|The actual builders which will construct the object, making some default assumptions (Eg: `NokiaBuilder`, `SamsungBuilder`)|
+|__Product__| The actual object being built (Eg: `Nokia`)|
+
+One way to implement traditionally, is to have a __Abstract Builder__ that has a constructor, that builds the object with required parameters only (or inferred). Through providing setters, other optional fields can be set. Eg:
+
+```java
+Phone phone = new NokiaPhoneBuilder("3310").setPrice(100).setColor('blue').getPhone();
+
+// The Abstract Builder will specify constructor, setPrice, setColor, getPhone etc and must be inherited by concrete builders
+```
+
+For `Javascript`, things can be done via Javascript Objects to set optional parameters.
+
+```javascript
+class Phone {
+    constructor(name, { price, color } = {}) {
+        ...
+    }
+}
+
+const phone = new Phone('3310', {
+    price: 100,
+    color: 'blue'
+})
+```
+
+<br><br>
+
+
+---
+## 2.4 - __Prototype__ 🧬
+
+---
+
+__Prototype__ clone objects according to a prototypical instance. It is useful when dealing with creating many identical objects individually, where we would prefer cloning instead.
+
+For example, let's say in our forum system, each user comment is an object. Instead of creating each comment one by one from the database (which is expensive due to connection to database), we can instead apply __Prototype__ design pattern, fetch a bunch of comments from database, create one individual comment object, and clone it for other comments.
+
+The implementation may be ambiguous, but the point remains
+* Create a prototypical instance
+* Clone it whenever we need a replica
