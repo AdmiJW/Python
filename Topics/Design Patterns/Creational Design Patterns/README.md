@@ -153,7 +153,7 @@ const phone = new Phone('3310', {
 
 __Prototype__ clone objects according to a prototypical instance. It is useful when dealing with creating many identical objects individually, where we would prefer cloning instead.
 
-For example, let's say in our forum system, each user comment is an object. Instead of creating each comment one by one from the database (which is expensive due to connection to database), we can instead apply __Prototype__ design pattern, fetch a bunch of comments from database, create one individual comment object, and clone it for other comments.
+For example, let's say in our forum system, each user comment is an object. Instead of creating each comment object one by one *(which may need to connect to database in the constructor, an expensive operation)*, we can instead apply __Prototype__ design pattern, fetch a bunch of comments from database, create one individual comment object, and clone it for other comments.
 
 The implementation may be ambiguous, but the point remains
 * Create a prototypical instance
