@@ -1,48 +1,104 @@
 
-class ATM_Machine:
-    def __init__(self, cash):
-        self._cash = cash
+#################################
+# Abstract interface of Subject
+#################################
+class BookParserInterface:
+    def __init__(self, url): pass
+    def get_no_of_pages(self): pass
+    def get_no_of_words(self): pass
+    def get_text(self): pass
 
-    def get_cash(self):
-        return self._cash
+##############################
+# Concrete Subject
+##############################
+class BookParserSubject(BookParserInterface):
+    def __init__(self, url):
+        # Assume we went our way to download the whole book, and parsed it
+        self._text = "Lorem Ipsum Dolor Sit Amet"
+        self._no_of_pages = 13
+        self._no_of_words = 5
 
-    def add_cash(self, amt):
-        self._cash += amt
+    def get_no_of_pages(self):
+        return self._no_of_pages
+    def get_no_of_words(self):
+        return self._no_of_words
+    def get_text(self):
+        return self._text
 
 
-# Note that instead of creating a proxy class, we can put the proxy functionality
-# in the ATM_Machine itself via decorators (or inheritance)
-class ATM_Proxy:
-    def __init__(self):
-        self._machine = ATM_Machine(1000)
-        self._isAccessed = False
+##############################
+# Proxy
+##############################
+class BookParserProxy(BookParserInterface):
+    # Cache of url -> meta information
+    cache = {}
 
-    def access_atm(self):
-        if self._isAccessed:
-            print("The ATM is being accessed!")
-            return None
-        else:
-            self._isAccessed = True
-            return self._machine
+    def __init__(self, url):
+        self._url = url
+        self._subject = None
 
-    def release_atm(self):
-        self._isAccessed = False
+    def cache_book(self):
+        BookParserProxy.cache[ self._url ] = {
+            "no_of_pages": self._subject.get_no_of_pages(),
+            "no_of_words": self._subject.get_no_of_words()
+        }
 
+    def get_no_of_pages(self):
+        # First, check if we ever instantiated?
+        if self._subject is not None:
+            print("Actual Subject access")
+            return self._subject.get_no_of_pages()
+
+        # No actual subject. Check Cache
+        if self._url in BookParserProxy.cache:
+            print("Cache hit")
+            return BookParserProxy.cache[self._url]['no_of_pages']
+
+        # No choice but to instantiate
+        print("Instantiation")
+        self._subject = BookParserSubject(self._url)
+        self.cache_book()
+        return self._subject.get_no_of_pages()
+
+    def get_no_of_words(self):
+        # First, check if we ever instantiated?
+        if self._subject is not None:
+            print("Actual Subject access")
+            return self._subject.get_no_of_words()
+
+        # No actual subject. Check Cache
+        if self._url in BookParserProxy.cache:
+            print("Cache hit")
+            return BookParserProxy.cache[self._url]['no_of_words']
+
+        # No choice but to instantiate
+        print("Instantiation")
+        self._subject = BookParserSubject(self._url)
+        self.cache_book()
+        return self._subject.get_no_of_words()
+
+    def get_text(self):
+        # First, check if we ever instantiated?
+        if self._subject is not None:
+            print("Actual Subject access")
+            return self._subject.get_text()
+
+        # No choice but to instantiate
+        print("Instantiation")
+        self._subject = BookParserSubject(self._url)
+        self.cache_book()
+        return self._subject.get_text()
 
 
 if __name__ == '__main__':
-    proxy = ATM_Proxy()
-    # Say now User1 wants to access the atm
-    user1ATM = proxy.access_atm()
-    print( user1ATM.get_cash() )
-    user1ATM.add_cash(2000)
+    print("Is it instantiated?")
+    book = BookParserProxy('https://www.book.com/alienInvader.txt')
+    print("Access word count")
+    book.get_no_of_words()
 
-    # If User1 is not done using ATM, User2 cannot access
-    user2ATM = proxy.access_atm()
-
-    # Now User1 is done, release atm
-    proxy.release_atm()
-
-    # Now finally User2 can use
-    user2ATM = proxy.access_atm()
-    print( user2ATM.get_cash() )
+    print("\n\nAnother instance")
+    book2 = BookParserProxy('https://www.book.com/alienInvader.txt')
+    print("Access page count")
+    book2.get_no_of_pages()
+    print("Access text")
+    book2.get_text()

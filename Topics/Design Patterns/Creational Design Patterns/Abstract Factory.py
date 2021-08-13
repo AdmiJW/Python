@@ -1,111 +1,116 @@
+import random
 
-# As you can see, these objects are kinda similar - They have pet itself (Cat/Dog) and pet food (CatFood / DogFood)
-# and also accessories (CatAccessory / DogAccessory)
 
 #################
-# Cats
+# Abstract Enemy
 #################
-class Cat:
-    def __init__(self, name):
-        self._name = name
-    def speak(self):
-        print(f"Meow! (I am {self._name})")
+class Enemy:
+    def attack(self): pass
+    def status(self): pass
 
-class CatFood:
-    def __init__(self, brand):
-        self._brand = brand
-    def __str__(self):
-        return f"Cat food brand {self._brand}"
+####################
+# Concrete Enemy
+####################
+class NormalInfantry(Enemy):
+    BASE_HP = 100
+    BASE_ATK = 25
 
-class CatAccessory:
-    def __init__(self, brand):
-        self._brand = brand
-    def __str__(self):
-        return f"Cat accessory brand {self._brand}"
+    def __init__(self, hp, attack):
+        self._hp = hp + NormalInfantry.BASE_HP
+        self._attack = attack + NormalInfantry.BASE_ATK
 
-##################
-# Dogs
-##################
-class Dog:
-    def __init__(self, name):
-        self._name = name
-    def speak(self):
-        print(f"Woof! (I am {self._name})")
-
-class DogFood:
-    def __init__(self, brand):
-        self._brand = brand
-
-    def __str__(self):
-        return f"Dog food brand {self._brand}"
-
-class DogAccessory:
-    def __init__(self, brand):
-        self._brand = brand
-    def __str__(self):
-        return f"Dog accessory brand {self._brand}"
-
-#########################################################################################
-# Concrete Factories - They must have common method to create objects like produce_pet()
-#########################################################################################
-class CatFactory:
-    def produce_all(self, pet_name, food_brand, accessory_brand):
-        return Cat(pet_name), CatFood(food_brand), CatAccessory(accessory_brand)
-    def produce_pet(self, pet_name):
-        return Cat(pet_name)
-    def produce_food(self, food_brand):
-        return CatFood(food_brand)
-    def produce_accessory(self, accessory_brand):
-        return CatAccessory(accessory_brand)
+    def attack(self):
+        print(f"Infantry(Normal) attacks and dealt damage {self._attack}")
+    def status(self):
+        print(f"Infantry(Normal) HP: {self._hp}, Attk: {self._attack}")
 
 
-class DogFactory:
-    def produce_all(self, pet_name, food_brand, accessory_brand):
-        return Dog(pet_name), DogFood(food_brand), DogAccessory(accessory_brand)
-    def produce_pet(self, pet_name):
-        return Dog(pet_name)
-    def produce_food(self, food_brand):
-        return DogFood(food_brand)
-    def produce_accessory(self, accessory_brand):
-        return DogAccessory(accessory_brand)
+class NormalTank(Enemy):
+    BASE_HP = 500
+    BASE_ATK = 50
 
-#######################################################################################
-# Here is where Abstraction Take Place (Where Abstract Factory, self._factory resides)
-#######################################################################################
-class PetShop:
-    def __init__(self):
-        self._factory = CatFactory()
-    def change_factory(self, factoryType='cat'):
-        if factoryType == 'cat':
-            self._factory = CatFactory()
-        else:
-            self._factory = DogFactory()
+    def __init__(self, hp, attack):
+        self._hp = hp + NormalTank.BASE_HP
+        self._attack = attack + NormalTank.BASE_ATK
 
-    def make_order(self, order_type='all', *args):
-        pet, food, accessory = None, None, None
-
-        # Check order type and produce corresponding goods
-        if order_type == 'all':
-            pet, food, accessory = self._factory.produce_all(*args)
-        elif order_type == 'pet':
-            pet = self._factory.produce_pet(*args)
-        elif order_type == 'food':
-            food = self._factory.produce_food(*args)
-        elif order_type == 'accessory':
-            accessory = self._factory.produce_accessory(*args)
-
-        # Output
-        if pet is not None:
-            pet.speak()
-        if food is not None:
-            print(food)
-        if accessory is not None:
-            print(accessory)
+    def attack(self):
+        print(f"Tank(Normal) attacks and dealt damage {self._attack}")
+    def status(self):
+        print(f"Tank(Normal) HP: {self._hp}, Attk: {self._attack}")
 
 
-# Main
+class HardInfantry(Enemy):
+    BASE_HP = 200
+    BASE_ATK = 50
+
+    def __init__(self, hp, attack):
+        self._hp = hp + HardInfantry.BASE_HP
+        self._attack = attack + HardInfantry.BASE_ATK
+
+    def attack(self):
+        print(f"Infantry(Hard) attacks and dealt damage {self._attack}")
+    def status(self):
+        print(f"Infantry(Hard) HP: {self._hp}, Attk: {self._attack}")
+
+
+class HardTank(Enemy):
+    BASE_HP = 750
+    BASE_ATK = 100
+
+    def __init__(self, hp, attack):
+        self._hp = hp + HardTank.BASE_HP
+        self._attack = attack + HardTank.BASE_ATK
+
+    def attack(self):
+        print(f"Tank(Hard) attacks and dealt damage {self._attack}")
+    def status(self):
+        print(f"Tank(Hard) HP: {self._hp}, Attk: {self._attack}")
+
+
+
+###################
+# Abstract Factory
+###################
+class EnemyFactory:
+    def createInfantry(self): pass
+    def createTank(self): pass
+    def createEnemies(self, size): pass
+
+#####################
+# Concrete Factory
+#####################
+class NormalModeEnemyFactory(EnemyFactory):
+    def createInfantry(self):
+        return NormalInfantry( random.randrange(50, 100), random.randrange(10, 20) )
+
+    def createTank(self):
+        return NormalTank( random.randrange(100, 250), random.randrange(30, 60) )
+
+    def createEnemies(self, size):
+        return [ random.choice( (self.createInfantry, self.createTank) )() for i in range(size) ]
+
+
+class HardModeEnemyFactory(EnemyFactory):
+    def createInfantry(self):
+        return HardInfantry(random.randrange(150, 250), random.randrange(30, 60))
+
+    def createTank(self):
+        return HardTank(random.randrange(250, 400), random.randrange(50, 100))
+
+    def createEnemies(self, size):
+        return [random.choices((self.createInfantry, self.createTank), (0.3, 0.7))[0]() for i in range(size)]
+
+
+
+
 if __name__ == '__main__':
-    pet_shop = PetShop()
-    pet_shop.make_order('all', 'Mimi', 'Cateats', 'Wool')
-    pet_shop.change_factory('dog')
-    pet_shop.make_order('all', 'Alexander', 'Dogeats', 'Ball')
+    normal_factory = NormalModeEnemyFactory()
+    hard_factory = HardModeEnemyFactory()
+
+    print("Normal Factory")
+    for enemy in normal_factory.createEnemies(10):
+        enemy.status()
+
+    print("\nHard Factory")
+    for enemy in hard_factory.createEnemies(10):
+        enemy.status()

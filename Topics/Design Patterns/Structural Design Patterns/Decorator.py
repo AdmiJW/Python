@@ -1,25 +1,56 @@
-from functools import wraps
+
+####################################
+# Interface (Not necessary in Python)
+####################################
+class Beverage:
+    def get_cost(self): pass
+    def describe(self): pass
 
 
-# The decorator function is a function that takes in an original function,
-# and returns a modified function
-def make_blink(original_function):
-    # Use this to make the decorator transparent in terms of its name and docstring
-    @wraps(original_function)
+###############################
+# Concrete Beverages
+###############################
+class Mocha(Beverage):
+    def get_cost(self):
+        return 5
+    def describe(self):
+        return "Mocha"
 
-    def decorator():
-        return f"<blink>{original_function()}<blink>"
+class Espresso(Beverage):
+    def get_cost(self):
+        return 3
+    def describe(self):
+        return "Espresso"
 
-    return decorator
+##############################
+# Interface for Beverages
+##############################
+class BeverageDecorator(Beverage):
+    def __init__(self, beverage):
+        self._beverage = beverage
 
+###############################
+# Concrete Decorators
+###############################
+class WhippedCreamDecorator(BeverageDecorator):
+    def get_cost(self):
+        return 1 + self._beverage.get_cost()
+    def describe(self):
+        return "Whipped Cream " + self._beverage.describe()
 
-# The function we want to decorate. Use @ followed by the decorator function
-@make_blink
-def hello_world():
-    return "Hello World"
+class ChocolateDecorator(BeverageDecorator):
+    def get_cost(self):
+        return 1.5 + self._beverage.get_cost()
+    def describe(self):
+        return "Chocolate " + self._beverage.describe()
+
 
 
 if __name__ == '__main__':
-    print(hello_world() )
+    beverage1 = ChocolateDecorator( WhippedCreamDecorator( Mocha() ) )
+    print( beverage1.get_cost() )
+    print( beverage1.describe() )
 
-
+    beverage2 = WhippedCreamDecorator( Espresso() )
+    print(beverage2.get_cost())
+    print(beverage2.describe())

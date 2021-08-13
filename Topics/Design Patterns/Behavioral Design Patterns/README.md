@@ -111,6 +111,69 @@ Also, it is suggested that concrete `Observer`s should keep a reference to the `
 
 
 ---
-## 3.0 -  
+## 3.0 - __Command__ 🗯
+
+__Reference [HERE](https://www.youtube.com/watch?v=9qA5kw8dcSU)__
+
+The definition:
+
+> __Command__ pattern encapsulates a request as object, thereby letting us parameterize other object with different request queue or by require and support undoable requests.
+
+In essence, __Command__ design pattern is similar to __Strategy__ pattern, where the methods of `Invoker` is an object rather than merely functions.
+
+The __Command__ pattern consists of `Invoker` (the one sending the commands), `Receiver` (the one receiving the commands), and `Command` themselves. An abstract `Command` would commonly have an `execute()` and `unexecute()` method, and used to create concrete `Command`s like `TurnOnCommand` and `ChangeSpeedCommand`
+
+---
+
+### Problem:
+
+Think of this: You are programming for a programmable/configurable remote control, where each button can be configured to perform different actions. How would you program such system?
+
+Maybe you suggest to have a internal state keeping track of what each button does, encoded as string or integers. Like:
+
+```json
+{
+    button1Action: 'turnon',
+    button2Action: 'changeSpeed'
+}
+```
+
+Then in the actual event handler, we could:
+
+```java
+public void onButton1Pressed(args) {
+    if (state.button1Action == 'turnon') ...
+    else...
+}
+```
+
+---
+
+### Solution:
+
+However, if you learnt __Strategy__ pattern, where methods themselves are already objects, suddenly we can just have our code like so:
+
+```java
+class RemoteControl {
+    Command button1Command = new TurnOnCommand(receiver);
+    Command button2Command = new ChangeSpeedCommand(receiver);
+
+    public void onButton1Pressed(args) {
+        button1Command.execute(args);
+    }
+}
+```
+
+The actual implementation of the command is now encapsulated inside the concrete `Command` itself. For example in the `TurnOnCommand`, `exeucte()` will contain `receiver.turnOn()`.
+
+Now, since the `Command` itself had became class attribute, the `Command` suddenly become very easily swappable in the `Invoker`!
+
+---
+
+### Furthermore...
+
+That's not all the benefits of __Command__ pattern! Think: functions themselves cannot possibly be saved in data structure (Unless you are using a language where functions are first class citizens), but `Command` object can! This opens up the possibility of __History__ and __Undo__ functionality!
+
+Previously in our `Command` interface, we have `execute()` and `unexecute()`. If those `Command` are saved in the `Invoker` as a __Stack__ data structure, we could now very easily perform __undo__! Just pop the top `Command` and call its `unexecute()`!
 
 ---

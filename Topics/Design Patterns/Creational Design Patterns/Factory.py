@@ -1,35 +1,75 @@
-
-# Dog Class
-class Dog:
-    def __init__(self, name):
-        self._name = name
-
-    def speak(self):
-        print(f"Woof! (I am {self._name})")
-
-# Cat Class
-class Cat:
-    def __init__(self, name):
-        self._name = name
-
-    def speak(self):
-        print(f"Meow! (I am {self._name})")
+import random
 
 
+#################
+# Abstract Enemy
+#################
+class Enemy:
+    def attack(self): pass
+    def status(self): pass
 
-# This is where factory design pattern applies:
-# A function which helps you to construct objects
-def get_pet(name, type='dog'):
-    if type == 'dog':
-        return Dog(name)
-    elif type == 'cat':
-        return Cat(name)
+####################
+# Concrete Enemy
+####################
+class Infantry(Enemy):
+    BASE_HP = 100
+    BASE_ATK = 25
+
+    def __init__(self, hp, attack):
+        self._hp = hp + Infantry.BASE_HP
+        self._attack = attack + Infantry.BASE_ATK
+
+    def attack(self):
+        print(f"Infantry attacks and dealt damage {self._attack}")
+    def status(self):
+        print(f"Infantry HP: {self._hp} Attk: {self._attack}")
+
+class Tank(Enemy):
+    BASE_HP = 500
+    BASE_ATK = 50
+
+    def __init__(self, hp, attack):
+        self._hp = hp + Tank.BASE_HP
+        self._attack = attack + Tank.BASE_ATK
+
+    def attack(self):
+        print(f"Tank attacks and dealt damage {self._attack}")
+    def status(self):
+        print(f"Tank HP: {self._hp} Attk: {self._attack}")
+
+
+
+###################
+# Abstract Factory
+###################
+class EnemyFactory:
+    def createEnemy(self): pass
+
+
+#####################
+# Concrete Factory
+#####################
+class NormalModeEnemyFactory(EnemyFactory):
+    def createEnemy(self):
+        ChosenEnemyClass = random.choice( (Infantry, Tank) )
+        return ChosenEnemyClass( random.randrange(50, 100), random.randrange(10, 30) )
+
+class HardModeEnemyFactory(EnemyFactory):
+    def createEnemy(self):
+        ChosenEnemyClass = random.choices( (Infantry, Tank), (0.3, 0.7) )[0]
+        return ChosenEnemyClass( random.randrange(100, 200), random.randrange(30, 50) )
+
 
 
 
 if __name__ == '__main__':
-    pet1 = get_pet("Alexander", 'dog')
-    pet2 = get_pet("Milly", 'cat')
+    normal_factory = NormalModeEnemyFactory()
+    hard_factory = HardModeEnemyFactory()
 
-    pet1.speak()
-    pet2.speak()
+    print("Normal Factory")
+    for enemy in [ normal_factory.createEnemy() for i in range(10) ]:
+        enemy.status()
+
+    print("\nHard Factory")
+    for enemy in [hard_factory.createEnemy() for i in range(10)]:
+        enemy.status()

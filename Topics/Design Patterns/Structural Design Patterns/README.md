@@ -1,7 +1,7 @@
 # ⚙️ Structual Design Patterns ⚙️
 
 ---
-## 3.0 - __Decorator__ 🎀
+## 1.0 - __Decorator__ 🎀
 
 ---
 
@@ -65,41 +65,172 @@ The subsequent design patterns such as __Adapter__, __Composite__ and __Strategy
 
 
 ---
-## 3.1 - __Proxy__ ⏱️
+## 2.0 - __Proxy__ ⏱️
 
 ---
 
-__Proxy__ solves the problem of having to instantiating a resource intensive object by only creating it when absolutely necessary. 
+__Reference [HERE](https://www.youtube.com/watch?v=NwaabHqPHeM)__
 
-In other words, it provides a class which will limit access to instantiation of another class
+According to the defintion:
 
-This design pattern is mainly used for security reasons, or object instantiation is expensive, or because it is accessed from a remote location.
+> __Proxy__ provides a surrogate/placeholder for another object to control access to it.
 
-For example, you may want only one user to be able to access a particular ATM machine at a time. In this situation, a proxy class may be useful to check whether the particular ATM machine is occupied and does it allow other party to access it.
+According to the book, __Proxy__ is split into 3 types:
 
+* __Remote__ - Subject to access is from other server, or from other project
+* __Virtual__ - Subject to access is potentially expensive, thus you may want to cache it or delay its instantiation until absolutely necessary
+* __Protection__ - Subject to access hold credentials and you want to authorize client prior to giving access
+
+The core __intent__ of using a __Proxy__, is to intersect the direct access of a client to a targeted subject, while the Proxy itself still is able to be used as the actual subject itself.
+
+The 3 main idea of proxy is that:
+
+* Proxy control access to the actual subject
+* Proxy implements the same interface as the actual subject
+* Proxy handles instantiation of the subject.
+
+Perhaps in a multithreaded program, a certain service is frequently accessed. Therefore, between client and the server, a proxy may be used to check whether the service is busy prior to giving access to a particular client. *(Maybe you can change implementation of service itself to check occupied, but maybe you simply can't)*
+
+---
+
+### Problem:
+
+Say we have a website about __Books__. We have a `BookParser` class that takes in a constructor of a `http` link that directs to the full txt of the book. 
+
+In the constructor, it will download the whole book, parses the whole book, and set some fields like `noOfPages`, `noOfWords`, etc.
+
+Say in the `BookParser` consist of `getNoOfPages()`, `getNoOfWords()`, and `toString()` which returns text of whole book as string. 
+
+Note that the constructor operation is expensive (Downloading and Parsing), while the other methods are cheaper. The question arises when there are times where the `BookParser` are instantiated (therefore expensive operation executed), but its method are never accessed?
+
+This is exactly where we would use a `BookParserProxy` to
+
+1. Delay the instantiation of `BookParser` until absolutely necessary
+1. Cache the result of method calls (Memoization)
+
+Let's see how it is done in `Proxy.py`
 
 <br><br>
 
 ---
-## 3.2 - __Adapter__ 🔌
+## 3.0 - __Adapter__ 🔌
 
 ---
+
+__Reference [HERE](https://www.youtube.com/watch?v=2PKQtcJjYvc)__
+
+Definition:
+
+> __Adapter__ converts the interface of a class to another interface the client would expect.
+ 
+> __Adapter__ let classes work together that couldn't otherwise becasue of incompatible interfaces.
 
 __Adapter__, exactly what you think it is. Adapter solves the problem of incompatible interfaces (Different expectation of method names or attributes).
 
-For example, when developing a war based game, we have a `Infantry` class that has `walk_forward()` and `fire_rifle()` method. Now, we added a `Tank` class that has `drive_forward()` and `fire_missle()` method. However, the commander wants to use the `Tank` classes with the same method names as those of `Infantry`'s, which is `walk_forward()` and `fire_rifle()`. A adapter design pattern needs to be used to "translate" the method calls!
+Here are the 4 design patterns that could easily get confused:
+
+* __Adapter__
+* __Facade__
+* __Proxy__
+* __Decorator__
+
+There are two ways of implementing __Adapters__:
+* Composition
+* Multiple Inheritance
+
+We'll mainly discuss __Composition Adapter__.
+
+Say we have a `Client` (Usually the program that we are writing) that wants to call an `Adaptee`'s (Usually inaccessible code, Eg: libraries) method. However, there are problem faced:
+
+* We do not has access, or does not want to modify the `Adaptee`'s source code.
+* The input format coming from the `Client` is incompatible to that of `Adaptee`'s.
+
+For example, we are developing a Stock program that monitors stock movement, presenting different stocks in bars and chart using some third party charting library (Adaptee). However, the stock data providers give data in __XML__ format, and the charting library expects to receive __JSON__ data. 
+
+With this, we could use composition to include a `ChartingAdapter` inside our data fetching class, and pass in our raw XML data into the adapter instead of directly calling `chart(data)` of the Adaptee, which you would expect an error.
+
+```java
+// Composition implementation of Adapter
+class DataFetcher {
+    DataToChartAdapter chartingAdapter = new XMLDataToJSONChartAdapter( library );  // Pass the adaptee into adapter
+    XMLData data;
+    ...
+    void chart() {
+        chartingAdapter.chart(data);
+    }
+}
+```
+
+Note in above example, we used `DataToChartAdapter`. Imagine suddenly we changed our stock data provider and the new provider gives __Excel__ data or __csv__ data. Without changing code in our `DataFetcher` class, we would still do fine, just implement a new `CSVDataToJSONChartAdapter` or `ExcelDataToJSONChartAdapter`!
+
+In programming languages like __Python__ where functions are first class citizens, we can build an adapter that maps function calls directly to another function call by magic function `__dict__` and `__getattr__`. This particularly solves the issue of incompatible method names between adaptees.
+
+---
+
+### Problem:
+
+For example, when developing a war based game, we have a `Infantry` class that has `walk_forward()` and `fire_rifle()` method. They are being controlled by a `Commander` that controls them using `unit.interpret_command('walk')` and `unit.interpret_command('fire')`. Now, we added a `Tank` class that has `drive_forward()` and `fire_missle()` method that is called by command `'drive'` and `'missle'` respectively. However, the commander wants to use the `Tank` classes with the same command `'walk'` and `'fire'` as those of `Infantry`'s. A adapter design pattern needs to be used to "translate" the commands!
 
 
 
 <br><br>
 
 ---
-## 3.3 - __Composite__ 🗂
+## 4.0 - __Facade__ 🗂
 
 ---
 
-A __Composite__ Design pattern uses a tree data structure to represent part-whole relationships. The tree data structure used will usually involve recursion algorithms.
+__Reference [HERE](https://www.youtube.com/watch?v=K4FkHVO5iac)__
 
-For example, we want to implement a `Menu` (Interface). Inside, it may have `MenuGroup` (Composite class) which may contain other `MenuGroup`s or simply `MenuItem`.
+A __Facade__ design pattern, defined:
 
-Then, when we want to print out the menu, we call `print_menu()` on the top level menu, and it will print the name of itself, and recurse on its children.
+> __Facade__ pattern provides a unified interface to a set of interfaces in a subsystem.
+
+> __Facade__ defines a higher level interface that makes the subsystem easier to use
+
+__Facade__ isn't too hard to understand. What we are essentially doing is to combined multiple subsystems under one unified interface that is easier to use.
+
+The name of the design pattern does makes sense if you think about it. __Facade__ means the front facing part of the house, which hides away internal, complex implementations like water piping, electrical cabling, foundation etc. Clients doesn't even need to know these internal implementation at all to use the system.
+
+Another important concept that should be introduced in system design, is [__Law of Demeter__](https://en.wikipedia.org/wiki/Law_of_Demeter) *(Aka __Principle of Least Knowledge__)*. It means:
+
+* Each unit should have only limited knowledge about other units: only units "closely" related to the current unit.
+* Each unit should only talk to its friends; don't talk to strangers.
+* Only talk to your immediate friends.
+
+Conceptually, it discourages code pattern like so: `obj1.obj2.obj3` which involves objects that are not inside the current object.
+
+Applying __Law of Demeter__ will inherently cause more classes, each class having a small responsibility rather than few classes that have large amount of responsibility. However it is cases like this that we are more supposed to use __Facade__ design pattern
+
+---
+
+### Problem:
+
+Let's take an ATM machine as an example. Under the hood, it may have to interact with `SecurityChecker`, `CardReader`, `AccountBalanceChecker` etc. Instead of having to interact with each of these from the client, we should create a `ATM` class that provides an unified interface to perform a significant operation such as `withdraw`.
+
+<br><br>
+
+---
+### 5.0 - Bridge 🌉
+
+__Reference [HERE](https://www.youtube.com/watch?v=F1YQ7YRjttI)__
+
+Definition:
+
+> The intent of the bridge pattern is to decouple an abstraction from its implementation so that the two can vary independently
+
+Let's start by looking at the concept of __cartesian product__. The cartesian product of two sets, {A,B,C} and {1,2} would be {(A,1), (A,2), (B,1), (B,2), (C,1), (C,2)}.
+
+Now, imagine those are two set of classes which are related. If one of these two sets are larger, we would have to implement as many classes as the size of the cartesian product, which is bad.
+
+Say we are developing an application which has `View` class that controls how a list of contents are displayed. Also, we have `Resource` which holds the contents to be displayed.
+
+For example, `View` can be of type __Detailed__, __Simple__, and __Mobile__. As for `Resource` we have __Book__, __Movie__ and __Music__.. We want to be able to display information about Books, Movies and Musics in our application, while allowing user to choose whatever type of view they want.
+
+Do we make a class for every possible combinations, say `DetailedBookView`, `DetailedMovie`, `DetailedMusic`, `SimpleBook`, `SimpleMovie`, `SimpleMusic` and so on? That would be bad when we decided to suddenly add a new type of `View` or `Resource`!
+
+Instead, using `Bridge` pattern, we decouple the `View` into concrete implementations like `DetailedView`, `SimpleView`, `MobileView`. Each of these views, will contain a resource like `BookResource`, `MovieResource` and `MusicResource`. Those `Resource` will implement a common interface that the `View` may use. For example, each of the `Resource` will implement `getTitle()`, `getAuthor()`, `getDescription()` according to the interface. This way, the classes we made are much less compared to cartesian product method.
+
+---
+
+<br><br>
