@@ -221,7 +221,9 @@ Definition:
 
 Let's start by looking at the concept of __cartesian product__. The cartesian product of two sets, {A,B,C} and {1,2} would be {(A,1), (A,2), (B,1), (B,2), (C,1), (C,2)}.
 
-Now, imagine those are two set of classes which are related. If one of these two sets are larger, we would have to implement as many classes as the size of the cartesian product, which is bad.
+Now, imagine those are two set of classes which are related. Set A, will have composition of one of the classes in Set B. If one of these two sets are larger, we would have to implement as many classes as the size of the cartesian product, which is bad.
+
+Some say that the __Bridge__ pattern are extended __Strategy__ pattern due to the similarity of their UML diagram.
 
 Say we are developing an application which has `View` class that controls how a list of contents are displayed. Also, we have `Resource` which holds the contents to be displayed.
 
@@ -231,6 +233,74 @@ Do we make a class for every possible combinations, say `DetailedBookView`, `Det
 
 Instead, using `Bridge` pattern, we decouple the `View` into concrete implementations like `DetailedView`, `SimpleView`, `MobileView`. Each of these views, will contain a resource like `BookResource`, `MovieResource` and `MusicResource`. Those `Resource` will implement a common interface that the `View` may use. For example, each of the `Resource` will implement `getTitle()`, `getAuthor()`, `getDescription()` according to the interface. This way, the classes we made are much less compared to cartesian product method.
 
+<br><br>
+
 ---
 
+### 6.0 - General Comparison
+
+__Comparison [HERE](https://www.youtube.com/watch?v=lPsSL6_7NBg)__
+
+
 <br><br>
+
+---
+
+### 7.0 - Template Method 🔩
+
+__Reference [HERE](https://www.youtube.com/watch?v=7ocpwK9uesw)__
+
+The definition is as follows:
+
+> The __Template Method__ pattern defines the skeleton of an algorithm in an operation, deferring some steps to subclasses. __Template Method__ let subclasses define certain steps of the algorithm without changing the algorithm structure. 
+
+In other words, __Template Methods__ will require us to first implement a incomplete method (algorithm) with some pieces missing. Those pieces shall be implemented in the subclasses. This prevents duplicating core algorithm that does not vary, yet providing freedom for the code that should vary by subclasses.
+
+For example, we are creating a method for `pdf`, `txt` and `csv` files that reads the file, processes accordingly and output to the user screen. Perhaps we will implement 3 classes, `PdfParser`, `TxtParser`, and `CsvParser`. However, we soon realize that the `parse()` method of three classes have some duplicate codes, mainly on the reading file and printing part. In this case, we could utilize the __Template Method__ to create an abstract class `Parser` and have the template method inside.
+
+This pattern can be applied to the following example situations:
+
+* __Sorting algorithm with Custom comparator__ - The core sorting algorithm is the same, just that the comparator varies depending on use case and the datatype to sort
+* __Hooks__ - Before and after the data is processed, hooks must be called.
+* __ORM__ - When we call `save()` on a `Model`, like `User`, there are same algorithm that are executed to save the data to the database.
+
+---
+
+### Solution:
+
+To implement __Template Method__, we would have to first have an abstract class which has the template method (incomplete algorithm) defined. In above example, the template method, `parse()` would look like:
+
+```java
+void parse() {
+    ... // Code for reading the file
+    process();  // This is the part that varies depending on concrete parsers
+    ... // Code for output
+}
+```
+
+With this, we will also make the `process()` method to be mandatory to be implemented in subclasses, namely `PdfParser`, `TxtParser`, and `CsvParser`. 
+
+<br><br>
+
+---
+
+### 8.0 - Composite 🗂
+
+__Reference [HERE](https://www.youtube.com/watch?v=EWDmWbJ4wRA)__
+
+The definition:
+
+? The __Composite__ pattern composes object into tree structure to represent part-whole hierarchies. Composite let client treat individual objects and composition of objects uniformly.
+
+The idea is, no matter whether an object is an individual unit, or it is an composition of multiple objects, we are able to treat it uniformly/transparently under the same interface. 
+
+__Composite__ pattern will consist of leaf and intermediate nodes. The intermediate nodes are responsible to keep track of its composed children. Because the __Composite__ pattern forms a tree structure, it is natural to also utilize __Recursion__ in computations. 
+
+### Solution:
+
+The __Composite__ pattern is very commonly used in frameworks that are __Component__ based, like `React.js`. If we create a `Navbar`, `Footer` or `Post` in React, all of them actually inherits from `React.Component`. 
+
+* These concrete components can be either leaf node (Not composed of any other component), or a composition of other smaller components.
+* However, leaf node or intermediate node, we are able to treat them uniformly under a common interface. For example, all of the components require a `render()` method to draw the UI on the screen.
+
+Another example is simply the file structure. Say we are developing a program that involves file structure, say we have leaf nodes as `File` like `txt` or `exe`, and intermediate nodes as `Directory` that may contain other files or directories, all of them should have a `listFiles()` method implemented. For simple `File`, `listFiles()` should just return the name of the file, while `listFile()` on `Directory` will combine all the results of `listFile()` of its children by recursion and return it.
