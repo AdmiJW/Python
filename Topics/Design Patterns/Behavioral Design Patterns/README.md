@@ -286,3 +286,80 @@ The __Null Object__ can be considered as an extension of the __Strategy__ patter
 * We are designing a GUI application. We have `OKButton` and `CancelButton` in our message box. We've decided to implement __Command__ strategy so that each button is tied to a single `Command`. Now, in some circumstances we may want to disable the `OKButton` normal behavior. Then using __Null Object__ pattern, we tie the `OKButton` with the `NothingCommand` that does nothing upon `execute()`.
 
 * When `getIterator()` is called on a collection that is empty, an instance of `EmptyIterator` may be returned, which `hasNext()` is always set to false. (Or in __Python__, always raise `StopIteration`)
+
+<br><br>
+
+---
+
+## 7.0 - Visitor 🏃🏼
+
+The __Visitor__ design pattern, definition:
+
+> The __Visitor__ design pattern is a way of separating an algorithm from an object structure on which it operates. A practical result of this separation is the ability to add new operations to existing object structures without modifying the structures
+
+This design pattern is exactly what the name is implying. We have a object, that will be "visited" by a __Visitor__, which will modify the behavior of the object without modifying the underlying code structure of the visited object. 
+
+---
+
+### Example:
+
+We have opened up a shop that consist of multiple `Goods`. Each one of the concrete `Goods` have a `getOriginalPrice()` method to return the price of the item. 
+
+Suddenly, the government imposes some tax to be applied on different goods. That means the price returned by the `getOriginalPrice()` is no longer the price that should be charged to the buyer. There may be __Wine Tax__, __Service Tax__ or __Sugar Tax__.
+
+Without having to modify the code on the concrete `Goods` itself, we can directly inject a new method `getPriceAfterTax(Visitor)` method into the `Goods`, which will accept a `Visitor` in the parameter, returning the modified price after tax is imposed on it.
+
+Now whenever we need to calculate the price on various goods, we use the `getPriceAfterTax()` method, passing in the correct `Visitor` that corresponds to the type of good we are selling.
+
+
+<br><br>
+
+---
+
+## 8.0 - Chain of Responsibility 🏃🏼
+
+The definition for __Chain of Responsibility__ is:
+
+> The __Chain of Responsibility__ involves sending data to an object for processing, and if that object can't use it, it sends the request to other objects that may be able to use it. This decouples the request and its processing.
+
+Usually, we want to process some input data. The data can either be __(1)__ processed under several operations, or there are __(2)__ several possible operations possible, but one and only one is able to process the data given.
+
+Without __Chain of Responsibility__, you might implement it as so:
+
+__(1)__
+```java
+if (data.satisfyCondition1)
+    // process 1
+if (data.satisfyCondition2)
+    // process 2
+if (data.satisfyCondition3)
+    // process 3
+```
+
+__(2)__
+```java
+if (data.satisfyCondition1)
+    // process 1
+else if (data.satisfyCondition2)
+    // process 2
+else (data.satisfyCondition3)
+    // process 3
+```
+
+This `if else` branching may bloat up as the condition grows. What __Chain of Responsibility__ suggests is to separate each condition into individual `Handlers`, and the data is passed through the chain of `Handlers`, just like a water flowing through a pipe, with processing capability.
+
+This pattern is seen commonly in __Middlewares__, where data is processed before reaching the terminal. For example, in `Node.js`'s `express.js` framework, middlewares are essentially implementing this pattern! __Middlewares__ like `express.json()` and `express.static()` will receive the HTML request passed to it, and after processing, pass to the next middleware via `next()` method.
+
+---
+
+### Problem Statement:
+
+We want to implement a calculator. Instead of doing it as so:
+
+```java
+if (operation == '+') // do addition
+else if (operation == '-') // do substraction
+...
+```
+
+We can use __Chain of Responsibility__ and decouple each operation into independent units instead. This proves to be particularly useful when our calculator starts to develop!
