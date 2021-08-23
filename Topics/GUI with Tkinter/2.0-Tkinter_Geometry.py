@@ -11,7 +11,7 @@
 #       > Label
 #       > Listbox
 #       > Menubutton
-#       > Menu
+#       > MenuState
 #       > Message
 #       > Radiobutton
 #       > Scale

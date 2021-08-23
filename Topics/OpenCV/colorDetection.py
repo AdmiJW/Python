@@ -3,7 +3,7 @@ import numpy as np
 
 
 #############################################
-#   SLIDERS WINDOW - Menu for sliders control
+#   SLIDERS WINDOW - MenuState for sliders control
 #############################################
 hue = 0
 hueTolerance = 0

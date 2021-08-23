@@ -4,7 +4,7 @@
 
 __Reference [HERE](https://github.com/ianrufus/youtube/tree/main/pygame-state)__
 
-![State Design Pattern Diagram](./state_design_pattern.png)
+![State Design Pattern Diagram](state_design_pattern.png)
 
 
 A game can be thought as a state machine. Even a basic game may consist of states like `Main Menu`, 
