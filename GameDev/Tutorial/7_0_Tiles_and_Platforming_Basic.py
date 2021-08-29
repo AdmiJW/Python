@@ -1,16 +1,19 @@
-# In most of the platforming games, the map itself can be thought as tiles.
+
+# In most of the platforming games, the map itself can be thought as tiles, or a plane of grids.
 # Therefore, when loading the game, some tiles will be reused many times, with the same image (Eg: grass tile)
-# So, we will be using TileMaps, which is essentially an array that shows which tile shall be placed on which grid.
+#
+# So, we will be using TileMaps, which is essentially an array that shows which tile shall be placed on where.
 # Usually, we will use external software to help us construct our map with tiles. Then, the tilemap would be
 # exported in certain format, like a csv that shows the id of the tile in each grid.
 #
 # To ensure our character will be standing on the tiles and not fall through it, we will need to check for collision
-# on each of the tiles. However of course, only the tiles that is ever possible to be touched by the player shall
+# on each of the tiles. However for performance, only the tiles that is ever possible to be touched by the player shall
 # be checked.
 #
 # While checking for collision, one way to make the logic easier, is to separate collision detection on x and y axis
-# (In other words, two pass). This separates the concern on whether the player is colliding on a certain tile from the
+# (In other words, two passes). This separates the concern on whether the player is colliding on a certain tile from the
 # left/right, or up/down.
+#
 # So when moving the character, we first move its x position, check collision, then only move its y position and
 # check for collision once again
 
@@ -48,6 +51,7 @@ class Tile(pygame.sprite.Sprite):
     TILE_SIZE = (10,10)
     BASE_PATH = path.join('Assets', 'platformer', 'Tiles')
 
+    # Tile ID Mapping
     # 0 - Nothing (Background)
     # 1 - Grass middle
     # 2 - Dirt
@@ -74,9 +78,6 @@ class Tile(pygame.sprite.Sprite):
         self.rect.top = location[0] * Tile.TILE_SIZE[1]
         self.rect.left = location[1] * Tile.TILE_SIZE[0]
 
-    def get_rect(self):
-        return self.rect
-
 
 class TileMap(pygame.sprite.Group):
     def __init__(self, tile_map_location):
@@ -88,12 +89,15 @@ class TileMap(pygame.sprite.Group):
                 for j, tile_id in enumerate(row):
                     if tile_id != '0':
                         self.add( Tile( tile_id, (i,j) ) )
-
-            print("Tilemap loaded successfully")
+        print("Tilemap loaded successfully")
 
     def draw(self, surface: pygame.Surface):
-        # Fill background
-        surface.fill( (184, 226, 255) )
+        # Fill background sky color
+        surface.fill( (163, 214, 255) )
+        # Hills background
+        pygame.draw.rect(surface, (38, 222, 129), (20, 60, 50 ,140) )
+        pygame.draw.rect(surface, (32, 191, 107), (60, 40, 100, 160))
+        pygame.draw.rect(surface, (14, 130, 69), (200, 80, 30, 120))
         # Call draw() method from super class to draw all Tile Spritess
         super().draw(surface)
 
@@ -103,11 +107,12 @@ class TileMap(pygame.sprite.Group):
 ############################
 class Player(pygame.sprite.Sprite):
     GRAVITY = 0.4
-    IMG_PATH = path.join('Assets', 'platformer', 'Player', 'p1_stand.png')
+    PLAYER_SIZE = (12,16)
+    IMG_PATH = path.join('Assets', 'platformer', 'Player', 'p3_stand.png')
 
     def __init__(self, screen: pygame.Surface):
         super().__init__()
-        self.image_right = pygame.transform.smoothscale( pygame.image.load( Player.IMG_PATH ), (15,20) ).convert_alpha()
+        self.image_right = pygame.transform.smoothscale( pygame.image.load( Player.IMG_PATH ), Player.PLAYER_SIZE ).convert_alpha()
         self.image_left = pygame.transform.flip(self.image_right, True, False)
         self.image = self.image_right
         self.rect = self.image.get_rect()
@@ -197,7 +202,7 @@ while not should_exit:
 
     player.update( tile_map )
 
-    v_screen.fill((0,0,0))
+    v_screen.fill( (0,0,0) )
     tile_map.draw( v_screen )
     player.draw()
 

@@ -8,11 +8,14 @@ pygame.init()
 # # What we can do to change screen size without affecting the game coordinates, is to blit all our entities onto a
 # # "Virtual" screen, then only upsize to fit the screen
 # # However, this would mean we need to resize on each frame, and applying the concept of dirty rects suddenly become
-# # harder to implement due to difference in Virtual screen and actual screen.
+# # harder to implement due to difference in Virtual screen and actual screen. Perhaps once we get the list of dirty
+# # rects in terms of virtual screen's size, we have to scale it up to reflect the actual screen's size.
 #
 # # Another method is to dynamically determine the current screen size and blit accordingly on all entities, kind of
 # like creating a CSS media query for all the entities.
-# This would be tiresome to implement, but is much faster.
+# For example, if the screen size is 400x300, character should be 30x20. However if the screen is 800x600, blit it in
+# size of 60x40
+# This would be tiresome to implement, but is much faster than upscaling each frame.
 
 ###########################
 # Cat class

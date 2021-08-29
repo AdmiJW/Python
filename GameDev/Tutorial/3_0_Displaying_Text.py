@@ -1,3 +1,8 @@
+
+# All of the Font functionality is in pygame.font module
+# We could use our own custom font by specifying where the .ttf file is located, or use
+# System Available fonts using pygame.font.SysFont class.
+#
 # To display a text on our game, we simply create a Font first, then use render() method of it.
 
 import pygame

@@ -1,5 +1,10 @@
+
 # Drawing shapes in pygame is done via pygame.draw module. We can use it to draw simple shapes like rectangle, squares,
 # circles, polygons or lines
+#
+# Unlike loading from images, it does not return a Surface which we need to manually blit onto the screen. Instead,
+# it will blit it readily for us onto the screen.
+
 import random
 
 import pygame

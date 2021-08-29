@@ -5,6 +5,7 @@ import os.path as path
 #################################################################################################
 # IT IS ALWAYS a good idea to use OOP in game development, representing every entity as an object
 # What you should really do is to use modularization, where Cat class is in different .py script
+#################################################################################################
 class Cat:
     IMG_PATH = path.join('Assets', 'cat_avatar', 'cat_a1.gif')
 

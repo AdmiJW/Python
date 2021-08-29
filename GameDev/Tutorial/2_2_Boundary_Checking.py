@@ -1,5 +1,11 @@
 # Boundary checking is to check if an image had moved beyond the visible area of the screen, and what
-# should be done in case that happens. Do it result in game over? or simply act like a wall that object can't pass?
+# should be done in case that happens. Does it result in game over? or simply act like a wall that object can't pass?
+#
+# To implement such behavior in our game, we would check the boundaries of the rectangle of our character with the
+# boundaries of the screen. Once we detect that the character is going out of the boundary of the screen, we would
+# adjust the character's position to be just right at the edge of the screen, not going out.
+#
+
 import pygame
 import os.path as path
 

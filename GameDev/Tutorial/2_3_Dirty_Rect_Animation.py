@@ -1,10 +1,18 @@
 import pygame
 import os.path as path
 
+##############################################################################################################
 # If we use update() or flip(), every frame the whole window is refreshed. This may be inefficient especially
 # if the screen size is large. Instead, we use the concept of "Dirty Rect", which we will only update specific
-# areas that need updating
-
+# areas that need to be updated.
+#
+# This technique is useful when not much on the screen has changed. For example, when the game is paused, or when
+# the game is in Main Menu.
+#
+# However, on games where there is a "camera" that follows the character, the whole map essentially needs to be
+# updated frequently, and given such, this technique is not really applicable. To speed things up in this case,
+# remember to convert each of the images into pixel format using .convert()!
+#
 ####################################
 # Cat Class
 class Cat:

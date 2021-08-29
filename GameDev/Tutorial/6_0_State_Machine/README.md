@@ -35,10 +35,11 @@ passing the required information to the transitioned state.
 * Instead of the State Machine having to call the state's `update()`, `handle_input()` and `render()` etc, another
 potential design choice is to just call the state's `run()` method, which it will internally handle the game loop. Of course,
   the loop doesn't run infinitely and will stop once a state transition needs to occur.
+  This method provides each state a higher control over the game, like different fps limit in different states.
   
 
-* State Machine isn't only bound to the top level State Machine! Internally, the states themselves can as well as be State
+* State Machine isn't only applicable to the top level of the game! Internally, the states can very well be State
 Machine themselves. For example, in the `In Game` state, it may sub-branch into states like `Playing`, `Paused`, `Loading` etc.
   For example, the `Paused` screen will still show the avatar and the world, only with a "Paused" text overlay.
   In this case, the avatar information may be inside `In Game` state, and making them accessible to top level state machine
-  may prove to be tedious. Instead, having sub-states in states may be more efficient (and make sense).
+  may prove to be tedious. Instead, having sub-states in states may be more efficient (and making better sense).
