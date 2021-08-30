@@ -154,7 +154,5 @@ while not should_exit:
     pygame.display.flip()
     clock.tick(60)
 
-    print(clock.get_fps())
-
 pygame.quit()
 quit()
