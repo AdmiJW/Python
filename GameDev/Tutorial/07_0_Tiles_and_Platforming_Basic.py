@@ -78,7 +78,9 @@ class Tile(pygame.sprite.Sprite):
         self.rect.top = location[0] * Tile.TILE_SIZE[1]
         self.rect.left = location[1] * Tile.TILE_SIZE[0]
 
-
+#####################
+# Tile Map Class
+#####################
 class TileMap(pygame.sprite.Group):
     def __init__(self, tile_map_location):
         super().__init__()
