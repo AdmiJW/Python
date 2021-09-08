@@ -97,7 +97,7 @@ class Grenade:
                          self.centerx,
                          self.centery,
                          min(7, random.randrange(int(self.radius) - 2, int(self.radius) + 2)) )
-                for i in range(random.randrange(40, 80)))
+                for i in range(random.randrange(150, 200)))
 
     def render(self):
         pygame.draw.circle(self._screen, (150, 0, 0), (self.centerx, self.centery), self.radius)
@@ -115,7 +115,7 @@ class Fragment(Particle):
         self.centerx = centerx
         self.centery = centery
         self.radius = radius
-        self.dx = random.randrange(-15, 15)
+        self.dx = random.randrange(-5, 5)
         self.dy = random.randrange(-25, 5)
 
         self.life = Fragment.LIFE

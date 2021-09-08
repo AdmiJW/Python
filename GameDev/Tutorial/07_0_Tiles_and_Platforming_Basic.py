@@ -1,4 +1,4 @@
-
+#####################################################################################################################
 # In most of the platforming games, the map itself can be thought as tiles, or a plane of grids.
 # Therefore, when loading the game, some tiles will be reused many times, with the same image (Eg: grass tile)
 #
@@ -11,11 +11,65 @@
 # be checked.
 #
 # While checking for collision, one way to make the logic easier, is to separate collision detection on x and y axis
-# (In other words, two passes). This separates the concern on whether the player is colliding on a certain tile from the
+# (In other words, two passes). This separates the concern on whether the player is colliding on a certain tile from
 # left/right, or up/down.
 #
 # So when moving the character, we first move its x position, check collision, then only move its y position and
 # check for collision once again
+#
+#
+# ############################
+# Food For Thought
+# ############################
+#   >   If we have a large, large map (or even infinite, like the case of Minecraft), do we have to do collision
+#       checking on ALL of the tiles? (In case of infinite map, then infinite tiles to check!)
+#       One solution is to separate the map into 'chunks', which are smaller rectangular area of the map, containing
+#       a fixed number of tiles.
+#       Only when the player is inside the chunk, then collision checking needs to be done to the tiles in that chunk
+#       Also, the idea of 'chunk' allows rendering what's visible on the screen only, instead of rendering ALL of the
+#       tiles in the world!
+#
+#       'Chunk' itself deserves a standalone tutorial on that, because the idea itself is not so simple, yet very
+#       important in 2D games (or 3D games like Minecraft!)
+#
+#   >   When doing collision detection, you may have faced this dilemma:
+#           |   Between Collidable and Collider, which one do I implement collision logic in it?
+#
+#       For example, Collidable is Tiles, and Collider is Player.
+#       If I implement collision logic in Collidable, then it look look like:
+#
+#           class Tile:
+#               def check_collision(player):...
+#
+#       Otherwise,
+#
+#           class Player:
+#               def check_collision(tile):...
+#
+#       Here's some tips to help you make your decision:
+#       - Think about relationship. Is Collider to Collidable 1-to-many relationship?
+#         Aka there is only 1 player, and many tiles to check
+#       - Think about complexity. When collider collides with collidable, which one involves more complex logic?
+#         In case of player colliding the tile, the complex logic goes to Player.
+#
+#       Consider that player not only has normal tiles, maybe it can also collide with spikes, ramps, etc
+#       If we choose to implement logic in Player, then:
+#
+#           class Player:
+#               def check_collision_tile(tiles):...
+#               def check_collision_spike(spikes):...
+#               def check_collision_ramp(ramps):...
+#
+#       On the other hand:
+#
+#           class Tile:
+#               def collide_player(player):...
+#           class Spike:
+#               def collide_player(player):...
+#           class Ramp:
+#               def collide_player(player):...
+#
+#       You'll decide
 
 import pygame
 import os.path as path
