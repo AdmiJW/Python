@@ -6,16 +6,17 @@
 ---
 
 In software development, you may observe certain recurring problems occuring.
-It is at this moment that we should utilize __design patterns__.
+
+Have it ever occurred on you, where you are confused on how should your code be structured and organized? Is your class constructor taking in too much parameters? Having too much if-else statements in your method? These are example of signs you should be using design patterns.
 
 
 *__Design Patterns__ are well-known solutions to recurring problems, which are widely
 accepted by the software development community.*
 
 
-__Motivations/Reasons to use Design Patterns:__
+__Motivations/Reasons to study and use Design Patterns:__
 * No need to reinvent the wheel, wasting time
-* Reuse of design ideas, best practices which lowers the cost and increases quality
+* Reuse of design ideas - best practices which lowers the cost and increases quality
 
 __Characteristics of Design Patterns:__
 * __Language Neutral__ - Applicable to all languages
