@@ -12,7 +12,7 @@ should_exit = False
 
 
 # Demonstration on how the image is loaded, here:
-cat_sprite = pygame.image.load( path.join( 'Assets', 'cat_avatar', 'cat_a1.gif') )
+cat_sprite = pygame.image.load(path.join('../Assets', 'cat_avatar', 'cat_a1.gif'))
 # Set the color key, which all pixels with this color is transparent
 cat_sprite.set_colorkey( (0, 114, 188) )
 # Convert it to pixel format for faster blitting

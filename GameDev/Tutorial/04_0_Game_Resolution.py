@@ -4,6 +4,8 @@ import os.path as path
 
 pygame.init()
 
+# In this example, press ENTER key to change the screen size of the game.
+
 
 # # What we can do to change screen size without affecting the game coordinates, is to blit all our entities onto a
 # # "Virtual" screen, then only upsize to fit the screen
