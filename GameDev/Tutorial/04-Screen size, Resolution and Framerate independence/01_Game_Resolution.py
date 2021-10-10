@@ -23,7 +23,7 @@ pygame.init()
 # Cat class
 ###########################
 class Cat(pygame.sprite.Sprite):
-    IMG_PATH = path.join('Assets', 'cat_avatar', 'cat_a1.gif')
+    IMG_PATH = path.join('../Assets', 'cat_avatar', 'cat_a1.gif')
 
     def __init__(self, screen):
         self._screen = screen

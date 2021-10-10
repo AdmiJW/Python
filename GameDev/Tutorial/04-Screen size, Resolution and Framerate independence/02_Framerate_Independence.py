@@ -58,7 +58,7 @@ DESIRED_TIME_INTERVAL = 1/60
 class Player(pygame.sprite.Sprite):
     GRAVITY = 0.4
     PLAYER_SIZE = (24,32)
-    IMG_PATH = path.join('Assets', 'platformer', 'Player', 'p3_stand.png')
+    IMG_PATH = path.join('../Assets', 'platformer', 'Player', 'p3_stand.png')
 
     def __init__(self, screen: pygame.Surface):
         super().__init__()
@@ -132,7 +132,7 @@ while not should_exit:
         else:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_UP:
-                    set_fps += min(120, set_fps + 5)
+                    set_fps = min(120, set_fps + 5)
                 elif event.key == pygame.K_DOWN:
                     set_fps = max(5, set_fps - 5)
             player.move(event)

@@ -40,7 +40,7 @@ clock = pygame.time.Clock()
 #################
 class Tile(pygame.sprite.Sprite):
     TILE_SIZE = (20, 20)
-    BASE_PATH = path.join('Assets', 'platformer', 'Tiles')
+    BASE_PATH = path.join('../Assets', 'platformer', 'Tiles')
 
     # Tile ID Mapping
     # 0 - Nothing (Background)
@@ -93,9 +93,9 @@ class TileMap(pygame.sprite.Group):
 ##########################
 
 class PlayerSound:
-    JUMP_SFX = pygame.mixer.Sound( path.join("Assets", "sounds", "jump_sound.wav"))
-    GRASS_SFX = pygame.mixer.Sound( path.join("Assets", "sounds", "grass_walk.wav"))
-    ROCK_SFX = pygame.mixer.Sound( path.join("Assets", "sounds", "footstep.wav"))
+    JUMP_SFX = pygame.mixer.Sound( path.join("../Assets", "sounds", "jump_sound.wav"))
+    GRASS_SFX = pygame.mixer.Sound( path.join("../Assets", "sounds", "grass_walk.wav"))
+    ROCK_SFX = pygame.mixer.Sound( path.join("../Assets", "sounds", "footstep.wav"))
     FOOTSTEP_INTERVAL = 5
 
     def __init__(self):
@@ -126,7 +126,7 @@ class PlayerSound:
 class Player(pygame.sprite.Sprite):
     GRAVITY = 0.4
     PLAYER_SIZE = (24,32)
-    IMG_PATH = path.join('Assets', 'platformer', 'Player', 'p3_stand.png')
+    IMG_PATH = path.join('../Assets', 'platformer', 'Player', 'p3_stand.png')
 
     def __init__(self, screen: pygame.Surface):
         super().__init__()
@@ -198,7 +198,7 @@ class Player(pygame.sprite.Sprite):
 ###################
 # Game Loop
 ###################
-tile_map = TileMap( path.join("Assets", "tilemap3.csv") )
+tile_map = TileMap( path.join("../Assets", "tilemap3.csv") )
 player = Player(screen)
 
 # To play background music is very simple:
@@ -208,7 +208,7 @@ pygame.mixer.pre_init(44100, -16, 2, 512)
 # Set number of channels to 32 instead of default 8
 pygame.mixer.set_num_channels(32)
 
-pygame.mixer.music.load( path.join('Assets', 'musics', 'happy.wav'))
+pygame.mixer.music.load( path.join('../Assets', 'musics', 'happy.wav'))
 pygame.mixer.music.set_volume(0.5)
 # Use loop=-1 to indicate infinite looping
 pygame.mixer.music.play(-1)

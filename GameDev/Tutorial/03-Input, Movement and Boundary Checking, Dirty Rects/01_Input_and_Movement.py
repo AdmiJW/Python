@@ -7,7 +7,7 @@ import os.path as path
 # What you should really do is to use modularization, where Cat class is in different .py script
 #################################################################################################
 class Cat:
-    IMG_PATH = path.join('Assets', 'cat_avatar', 'cat_a1.gif')
+    IMG_PATH = path.join('../Assets', 'cat_avatar', 'cat_a1.gif')
 
     def __init__(self, screen):
         self._screen = screen

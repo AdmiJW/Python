@@ -18,7 +18,7 @@ screen = pygame.display.set_mode( (400, 711) )
 # Background Class
 ######################
 class Background(pygame.sprite.Sprite):
-    PATH = path.join("Assets", "FlappyBirb", "background.png")
+    PATH = path.join("../Assets", "FlappyBirb", "background.png")
 
     def __init__(self, screen: pygame.Surface):
         super().__init__()
@@ -38,7 +38,7 @@ class Background(pygame.sprite.Sprite):
 # Foreground Class
 ######################
 class Foreground(pygame.sprite.Sprite):
-    PATH = path.join("Assets", "FlappyBirb", "ground.png")
+    PATH = path.join("../Assets", "FlappyBirb", "ground.png")
 
     def __init__(self, screen: pygame.Surface):
         super().__init__()

@@ -61,7 +61,7 @@ clock = pygame.time.Clock()
 ######################
 class Tile(pygame.sprite.Sprite):
     TILE_SIZE = (10,10)
-    BASE_PATH = path.join('Assets', 'platformer', 'Tiles')
+    BASE_PATH = path.join('../Assets', 'platformer', 'Tiles')
 
     # Tile ID Mapping
     # 0 - Nothing (Background)
@@ -131,7 +131,7 @@ class TileMap(pygame.sprite.Group):
 class Player(pygame.sprite.Sprite):
     GRAVITY = 0.4
     PLAYER_SIZE = (12,16)
-    IMG_PATH = path.join('Assets', 'platformer', 'Player', 'p3_stand.png')
+    IMG_PATH = path.join('../Assets', 'platformer', 'Player', 'p3_stand.png')
 
     def __init__(self, screen: pygame.Surface):
         super().__init__()
@@ -210,7 +210,7 @@ class Player(pygame.sprite.Sprite):
         self.screen.blit( self.image, self.rect.move(-scroll_value[0], -scroll_value[1]) )
 
 
-tile_map = TileMap( path.join('Assets', 'tilemap2.csv'), v_screen )
+tile_map = TileMap( path.join('../Assets', 'tilemap2.csv'), v_screen )
 player = Player( v_screen )
 
 scroll_value = [0,0]

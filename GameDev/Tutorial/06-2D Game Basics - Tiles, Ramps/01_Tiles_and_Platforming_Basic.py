@@ -103,7 +103,7 @@ screen = pygame.display.set_mode( (600, 400) )
 #
 class Tile(pygame.sprite.Sprite):
     TILE_SIZE = (10,10)
-    BASE_PATH = path.join('Assets', 'platformer', 'Tiles')
+    BASE_PATH = path.join('../Assets', 'platformer', 'Tiles')
 
     # Tile ID Mapping
     # 0 - Nothing (Background)
@@ -164,7 +164,7 @@ class TileMap(pygame.sprite.Group):
 class Player(pygame.sprite.Sprite):
     GRAVITY = 0.4
     PLAYER_SIZE = (12,16)
-    IMG_PATH = path.join('Assets', 'platformer', 'Player', 'p3_stand.png')
+    IMG_PATH = path.join('../Assets', 'platformer', 'Player', 'p3_stand.png')
 
     def __init__(self, screen: pygame.Surface):
         super().__init__()
@@ -247,7 +247,7 @@ clock = pygame.time.Clock()
 should_exit = False
 
 player = Player(v_screen)
-tile_map = TileMap( path.join('Assets', 'tilemap1.csv') )
+tile_map = TileMap( path.join('../Assets', 'tilemap1.csv') )
 
 while not should_exit:
     for event in pygame.event.get():

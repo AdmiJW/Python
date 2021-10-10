@@ -26,7 +26,7 @@ clock = pygame.time.Clock()
 # PlayerAnimator class responsible for Player's image animation
 ##################################################################
 class PlayerAnimator:
-    BASE_PATH = path.join("Assets", "Little_boy", "Transparent PNG")
+    BASE_PATH = path.join("../Assets", "Little_boy", "Transparent PNG")
     TRANSITION_EVERY_N_FRAME = 2
 
     @staticmethod

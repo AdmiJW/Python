@@ -1,22 +1,18 @@
+# Boundary checking is to check if an image had moved beyond the visible area of the screen, and what
+# should be done in case that happens. Does it result in game over? or simply act like a wall that object can't pass?
+#
+# To implement such behavior in our game, we would check the boundaries of the rectangle of our character with the
+# boundaries of the screen. Once we detect that the character is going out of the boundary of the screen, we would
+# adjust the character's position to be just right at the edge of the screen, not going out.
+#
+
 import pygame
 import os.path as path
 
-##############################################################################################################
-# If we use update() or flip(), every frame the whole window is refreshed. This may be inefficient especially
-# if the screen size is large. Instead, we use the concept of "Dirty Rect", which we will only update specific
-# areas that need to be updated.
-#
-# This technique is useful when not much on the screen has changed. For example, when the game is paused, or when
-# the game is in Main Menu.
-#
-# However, on games where there is a "camera" that follows the character, the whole map essentially needs to be
-# updated frequently, and given such, this technique is not really applicable. To speed things up in this case,
-# remember to convert each of the images into pixel format using .convert()!
-#
 ####################################
 # Cat Class
 class Cat:
-    IMG_PATH = path.join('Assets', 'cat_avatar', 'cat_a1.gif')
+    IMG_PATH = path.join('../Assets', 'cat_avatar', 'cat_a1.gif')
 
     def __init__(self, screen):
         self._screen = screen
@@ -29,9 +25,6 @@ class Cat:
         self._sprite_face_left = pygame.transform.flip( self._sprite_face_right, True, False)
 
         self._sprite = self._sprite_face_right
-
-        self.width = self._sprite.get_width()
-        self.height = self._sprite.get_height()
 
         self.x = self._screen.get_rect().centerx - self._sprite.get_rect().width // 2
         self.y = self._screen.get_rect().centery - self._sprite.get_rect().height // 2
@@ -72,24 +65,15 @@ class Cat:
             self._sprite = self._sprite_face_left
 
 
-    def update(self, dirty_rects):
-        # Obtain the rectangle BEFORE new location
-        dirty_rect = pygame.Rect( (self.x, self.y), (self.width, self.height) )
-
+    def update(self):
         self.x += self.dx
         self.y += self.dy
+        # Boundary checking done here. If exceeds screen width, fix it back
         self.x = max(0, min( self._screen.get_width() - self._sprite.get_width(), self.x) )
         self.y = max(0, min(self._screen.get_height() - self._sprite.get_height(), self.y) )
 
-
-        # Remove old sprite and blit the sprite on new location
-        self._screen.fill((0,0,0), dirty_rect)
+        # Some experience improvement: Now cat seem obvious to facing left or right
         self._screen.blit(self._sprite, (self.x, self.y))
-
-        # Union the dirty rect with new location
-        dirty_rect = dirty_rect.union( pygame.Rect( (self.x, self.y), (self.width, self.height) ) )
-        # Append the dirty rectangle onto the dirty_rects list
-        dirty_rects.append(dirty_rect)
 
 ##########################################
 # End of Class Cat
@@ -99,32 +83,31 @@ class Cat:
 pygame.init()
 
 screen = pygame.display.set_mode( (800, 450) )
-pygame.display.set_caption('Meow')
+pygame.display.set_caption("Meow")
 
 clock = pygame.time.Clock()
+
 should_exit = False
 
-
 cat = Cat(screen)
-screen.fill( (0,0,0) )
-pygame.display.update()
 
 while not should_exit:
+    # Logic
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             should_exit = True
         elif event.type == pygame.KEYDOWN:
-            cat.key_pressed(event)
+            cat.key_pressed( event )
         elif event.type == pygame.KEYUP:
-            cat.key_released(event)
+            cat.key_released( event )
 
-    # Dirty Rect animation. We'll make a list of dirty_rect
-    dirty_rects = []
-    cat.update( dirty_rects )
-    pygame.display.update( dirty_rects )
+    # Update
+    screen.fill( (0,0,0) )
+    cat.update()
+    pygame.display.flip()
 
+    # FPS
     clock.tick(30)
-
 
 pygame.quit()
 quit()
