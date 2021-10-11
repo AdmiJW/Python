@@ -4,7 +4,7 @@
 # etc
 #
 # The idea behind Perlin noise is that it is smooth randomness. You give it a coordinate of x (for 1D perlin noise)
-# or x,y (for 2D perlin noise), and it will return to you a number in range [0,1).
+# or x,y (for 2D perlin noise), and it will return to you a number in range [-1,1].
 # However, the difference between using pure psuedorandom algorithm with using Perlin noise is that Perlin noise is
 # smooth. You won't suddenly get transitioned from low value to high value suddenly when using Perlin noise, which
 # is what world generation is all about!
