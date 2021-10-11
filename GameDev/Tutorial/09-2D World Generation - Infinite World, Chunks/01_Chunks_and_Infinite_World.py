@@ -28,80 +28,65 @@
 
 import sys
 import pygame
-import os.path as path
 
-SCREEN_SIZE = (640, 480)
-TILE_SIZE = (35, 35)
-CHUNK_WIDTH = 8
-DESIRED_FPS = 60
-
-
-####################
-# Tile class
-####################
-class Tile(pygame.sprite.Sprite):
-    def __init__(self):
-
-
-
-
-
-
-#####################
-# Character class
-#####################
-class Player(pygame.sprite.Sprite):
-    SPRITE_PATH = path.join('Assets', 'platformer', 'Player', 'p3_front.png')
-    SPEED = 5
-    GRAVITY = 1
-
-    def __init__(self):
-        super().__init__()
-        self.image = pygame.image.load( Player.SPRITE_PATH )
-        self.image = pygame.transform.scale( self.image, (self.image.get_width() // 2, self.image.get_height() // 2) )
-        self.image = self.image.convert_alpha()
-        self.rect = self.image.get_rect(left=0, bottom=SCREEN_SIZE[1] // 2)
-        self.dx = 0
-        self.dy = 0
-
-    def handle_input(self, event):
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_d:
-                self.dx += Player.SPEED
-            elif event.key == pygame.K_a:
-                self.dx -= Player.SPEED
-        elif event.type == pygame.KEYUP:
-            if event.key == pygame.K_d:
-                self.dx -= Player.SPEED
-            elif event.key == pygame.K_a:
-                self.dx += Player.SPEED
-
-    def update_horizontal(self, dt):
-        self.rect.left += self.dx * dt
-
-    def update_vertical(self, dt):
-        self.rect.top += self.dy * dt
-        self.dy = min(1, self.dy + Player.GRAVITY * dt)
-
-    def render(self, screen: pygame.Surface):
-        screen.blit(self.image, self.rect)
-
-
-
-
-
-
+import CONSTANTS as C
 
 ##################
 # Game Setup
 ##################
 
 pygame.init()
-
-screen = pygame.display.set_mode(SCREEN_SIZE)
 clock = pygame.time.Clock()
+screen = pygame.display.set_mode(C.SCREEN_SIZE)
+
+
+from Player import Player
+from FlatChunk import FlatChunk
+
+
+###########################
+# Chunk Management System
+###########################
+#
+# In your implementation, as you walk you may see the chunks being generated from emptyness. If you don't want this
+# type of effect, simply extend the boundary for chunk generation in update_chunk_in_range() method to generate
+# 1 or 2 more chunks that are out of screen.
+class ChunkSystem:
+    CHUNK_WIDTH_PX = C.CHUNK_WIDTH * C.TILE_SIZE[0]
+
+    def __init__(self):
+        self.chunks = dict()
+        self.chunk_in_range = []
+
+    def update_chunk_in_range(self, camera:tuple):
+        self.chunk_in_range.clear()
+
+        left_edge = camera[0]
+        right_edge = left_edge + C.SCREEN_SIZE[0]
+        for left in range(left_edge - ChunkSystem.CHUNK_WIDTH_PX, right_edge + ChunkSystem.CHUNK_WIDTH_PX,
+                          ChunkSystem.CHUNK_WIDTH_PX):
+            id = left // (C.CHUNK_WIDTH * C.TILE_SIZE[0])
+
+            # Chunk not seen before. Generate a new one
+            if id not in self.chunks:
+                self.chunks[id] = FlatChunk(left)
+            self.chunk_in_range.append( self.chunks[id] )
+
+    def update_after_player_horizontal(self, player:Player):
+        for chunk in self.chunk_in_range:
+            chunk.update_after_player_horizontal(player)
+
+    def update_after_player_vertical(self, player:Player):
+        for chunk in self.chunk_in_range:
+            chunk.update_after_player_vertical(player)
+
+    def render(self, screen:pygame.Surface, camera:tuple):
+        for chunk in self.chunk_in_range:
+            chunk.render(screen, camera)
+
 
 player = Player()
+chunk_sys = ChunkSystem()
 
 ##################
 # Game Loop
@@ -109,7 +94,7 @@ player = Player()
 should_exit = False
 
 while not should_exit:
-    dt = round( clock.tick(DESIRED_FPS) * 0.001 * DESIRED_FPS )
+    dt = round( clock.tick(C.DESIRED_FPS) * 0.001 * C.DESIRED_FPS )
 
     # Events
     for event in pygame.event.get():
@@ -118,13 +103,20 @@ while not should_exit:
         else:
             player.handle_input(event)
 
+    camera = player.get_camera()
+
     # Update
+    chunk_sys.update_chunk_in_range(camera)
     player.update_vertical(dt)
+    chunk_sys.update_after_player_vertical(player)
     player.update_horizontal(dt)
+    chunk_sys.update_after_player_horizontal(player)
 
     # Rendering
-    screen.fill( (52, 152, 219) )
-    player.render( screen )
+    screen.fill( (138, 253, 255) )
+
+    chunk_sys.render(screen, camera)
+    player.render( screen, camera )
 
     pygame.display.flip()
 
