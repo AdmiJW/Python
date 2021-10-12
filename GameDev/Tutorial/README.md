@@ -2,6 +2,7 @@
 
 ![Game Screenshot](./Assets/Demo/game_dev.gif)
 ![Game Screenshot2](./Assets/Demo/Demo2.gif)
+![Game Screenshot3](./Assets/Demo/Demo3.gif)
 
 Following this tutorial, one will be exposed to basic game development concepts and techniques using __Python's__
 `pygame` module
@@ -17,7 +18,7 @@ Created by __AdmiJW__, with main references going to:
 |-|-|
 | __1__ | Boilerplate code you have to write in order to get started with `pygame` |
 | __2__ | Basic Rendering - Image, Text, Shape |
-| __3__ | Input, Movement and Boundary Checking. Dirty Rects |
+| __3__ | Input, Movement, Collision, Boundary Checking. Dirty Rects |
 | __4__ | Screen size and resolution, Framerate Independence |
 | __5__ | State Machine (Directory) |
 | __6__ | 2D game basics - Tiles, Ramps |
