@@ -1,6 +1,7 @@
 # Introduction to Game Development - Tutorial
 
-![Game Screenshot](./Assets/game_dev.gif)
+![Game Screenshot](./Assets/Demo/game_dev.gif)
+![Game Screenshot2](./Assets/Demo/Demo2.gif)
 
 Following this tutorial, one will be exposed to basic game development concepts and techniques using __Python's__
 `pygame` module
@@ -25,3 +26,4 @@ Created by __AdmiJW__, with main references going to:
 | __9__ | 2D World Generation - Infinite World, Chunks |
 | __10__ | Sounds and Musics |
 | __11__ | Porting your `pygame` project |
+| __12__ | Lighting |
