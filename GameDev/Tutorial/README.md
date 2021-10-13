@@ -3,6 +3,7 @@
 ![Game Screenshot](./Assets/Demo/game_dev.gif)
 ![Game Screenshot2](./Assets/Demo/Demo2.gif)
 ![Game Screenshot3](./Assets/Demo/Demo3.gif)
+![Game Screenshot4](./Assets/Demo/Demo4.gif)
 
 Following this tutorial, one will be exposed to basic game development concepts and techniques using __Python's__
 `pygame` module

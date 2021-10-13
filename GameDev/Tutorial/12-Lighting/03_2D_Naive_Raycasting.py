@@ -107,7 +107,7 @@ class Ray:
 
     def render( self, screen:pygame.Surface ):
         if self.target is not None:
-            pygame.draw.aaline(screen, (100,100,100), self.c, self.target )
+            pygame.draw.line(screen, (100,100,100), self.c, self.target )
 
 
     # Checks for intersection between a line segment and a direction vector from center point c
