@@ -47,6 +47,7 @@ SCREEN_SIZE = (960,720)
 
 pygame.init()
 screen = pygame.display.set_mode( SCREEN_SIZE )
+clock = pygame.time.Clock()
 
 
 
@@ -106,7 +107,7 @@ class Ray:
 
     def render( self, screen:pygame.Surface ):
         if self.target is not None:
-            pygame.draw.line(screen, (130,130,130), self.c, self.target, 1 )
+            pygame.draw.aaline(screen, (100,100,100), self.c, self.target )
 
 
     # Checks for intersection between a line segment and a direction vector from center point c
@@ -141,12 +142,25 @@ walls = [
     Wall( 0, 400, 500, 400 ),
     Wall( 300, 0, 300, 200 ),
     Wall( 500, 0, 500, 200 ),
-    Wall( 300, 200, 460, 200 )
+    Wall( 300, 200, 460, 200 ),
+
+    Wall( 700, 0, 700, 50),
+    Wall( 700, 60, 700, 100),
+    Wall( 700, 110, 700, 150),
+    Wall( 700, 160, 700, 200),
+    Wall( 700, 210, 700, 250),
+    Wall( 700, 260, 700, 300),
+    Wall( 700, 310, 700, 350),
+    Wall( 700, 360, 700, 700),
+
+    Wall( 200, 500, 500, 500 )
 ]
-rays = [ Ray(0, 0, deg) for deg in range(360) ]
+rays = [ Ray(0, 0, deg / 2) for deg in range(720) ]
 
 should_exit = False
 while not should_exit:
+    dt = clock.tick(60) * 0.001 * 60
+    print(clock.get_fps())
     # Event handling
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
